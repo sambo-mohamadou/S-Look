@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"github.com/sambo-mohamadou/S-Lookup/search"
 )
 
 func main() {
@@ -16,9 +18,9 @@ func main() {
 	}
 
 	if *deepnessFlag {
-		fmt.Println("I see you want to go deep")
+		fmt.Println(search.DipSearch("as"))
 	} else {
-		fmt.Println("I see that you are a teaser")
+		fmt.Println(search.TipSearch("as"))
 	}
 
 }
