@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/sambo-mohamadou/S-Lookup/search"
 )
@@ -18,9 +19,16 @@ func main() {
 	}
 
 	if *deepnessFlag {
-		fmt.Println(search.DipSearch("as"))
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println("Error getting home directory:", err)
+			return
+		}
+		pattern := home + "\\.*\\" + flag.Arg(0) + "*"
+		fmt.Println(pattern)
+		fmt.Println(search.GlobSearch(pattern))
 	} else {
-		fmt.Println(search.TipSearch("as"))
+		fmt.Println(search.TipSearch(flag.Arg(0)))
 	}
 
 }
