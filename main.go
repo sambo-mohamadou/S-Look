@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/fs"
 	"os"
-
-	"github.com/sambo-mohamadou/S-Lookup/search"
+	"path/filepath"
 )
 
 func main() {
@@ -19,16 +19,48 @@ func main() {
 	}
 
 	if *deepnessFlag {
-		home, err := os.UserHomeDir()
+
+		// pattern := home + "\\*\\" + flag.Arg(0) + "*"
+		// fmt.Println(pattern)
+		// fmt.Println(search.GlobSearch(pattern))
+		err := dipSearch(flag.Arg(0))
 		if err != nil {
-			fmt.Println("Error getting home directory:", err)
+			fmt.Println("There has been an issue : ", err)
 			return
 		}
-		pattern := home + "\\.*\\" + flag.Arg(0) + "*"
-		fmt.Println(pattern)
-		fmt.Println(search.GlobSearch(pattern))
 	} else {
-		fmt.Println(search.TipSearch(flag.Arg(0)))
+		fmt.Println(tipSearch(flag.Arg(0)))
 	}
 
+}
+
+func tipSearch(file string) string {
+	return file
+}
+
+func dipSearch(target string) error {
+	//target := file
+
+	// matches, err := filepath.Glob(file)
+	// if err != nil {
+	// 	return nil, err
+	// } else {
+	// 	return matches, nil
+	// }
+	home, er := os.UserHomeDir()
+	if er != nil {
+		fmt.Println("Error getting home directory:", er)
+		return er
+	}
+
+	err := filepath.WalkDir(home, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if ok, _ := filepath.Match("*"+target+"*", d.Name()); ok {
+			fmt.Println(" ", path, d.IsDir())
+		}
+		return nil
+	})
+	return err
 }
