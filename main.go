@@ -55,7 +55,7 @@ func dipSearch(target string) error {
 
 	err := filepath.WalkDir(home, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return err
+			fmt.Println("Error ", err)
 		}
 		if ok, _ := filepath.Match("*"+target+"*", d.Name()); ok {
 			fmt.Println(" ", path, d.IsDir())
